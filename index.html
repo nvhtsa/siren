@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SIREN — draw sound</title>
+<meta name="description" content="A spectrogram sketchpad. Paint on a time × frequency canvas and hear the picture." />
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23090b10'/%3E%3Cpath d='M6 21c4 0 4-10 8-10s4 10 8 10 4-6 4-6' stroke='%234cf0d8' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+<main class="app" id="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="brand-text">
+        <h1>SIREN</h1>
+      </div>
+    </div>
+    <div class="top-actions">
+      <label class="ctl" for="duration">
+        <span>length</span>
+        <select id="duration">
+          <option value="6">6s</option>
+          <option value="9">9s</option>
+          <option value="12" selected>12s</option>
+          <option value="16">16s</option>
+          <option value="20">20s</option>
+        </select>
+      </label>
+      <button class="btn ghost" id="export" type="button">export .wav</button>
+    </div>
+  </header>
+
+  <section class="stage">
+    <div class="screen" id="screen">
+      <canvas id="grid" class="layer"></canvas>
+      <canvas id="ink" class="layer"></canvas>
+      <canvas id="overlay" class="layer"></canvas>
+      <div class="readout" id="readout" hidden></div>
+      <div class="render-state" id="renderState" hidden>
+        <div class="render-track"><i id="renderBar"></i></div>
+        <span>synthesising</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="transport">
+    <button id="play" class="play" type="button" aria-label="Play">
+      <svg class="ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.2v13.6L19 12z"/></svg>
+      <svg class="ico-stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="7.5" y="7.5" width="9" height="9" rx="1.4"/></svg>
+    </button>
+
+    <div class="clock"><span id="tcur">0.00</span><span class="slash">/</span><span id="tlen">12.00</span></div>
+    <button id="loop" class="btn toggle is-on" type="button">loop</button>
+
+    <span class="vline"></span>
+
+    <div class="tools" role="group" aria-label="Tool">
+      <button class="btn tool is-on" data-tool="pen" type="button">pen</button>
+      <button class="btn tool" data-tool="chord" type="button">chord</button>
+      <button class="btn tool" data-tool="eraser" type="button">erase</button>
+    </div>
+
+    <label class="ctl" for="size"><span>brush</span><input id="size" type="range" min="4" max="34" step="1" value="10" /></label>
+
+    <label class="ctl" for="snap">
+      <span>snap</span>
+      <select id="snap">
+        <option value="off">free</option>
+        <option value="pentMinor" selected>pent minor</option>
+        <option value="pentMajor">pent major</option>
+        <option value="minor">minor</option>
+        <option value="major">major</option>
+      </select>
+    </label>
+
+    <button id="harm" class="btn toggle" type="button" title="Add upper partials to every stroke">harmonics</button>
+
+    <span class="vline"></span>
+    <button id="undo" class="btn ghost" type="button">undo</button>
+    <button id="clear" class="btn ghost" type="button">clear</button>
+  </section>
+
+  <footer class="presets">
+    <span class="preset-label">start from</span>
+    <div class="chips" id="chips"></div>
+    <p class="hint">space play &middot; b pen &middot; c chord &middot; e erase &middot; &#8984;/ctrl+z undo</p>
+  </footer>
+
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
